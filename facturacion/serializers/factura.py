@@ -12,11 +12,18 @@ class FacturaSerializer(serializers.ModelSerializer):
 
 class FacturaDetalleSerializer(serializers.ModelSerializer):
     factura_productos = FacturaProductoDetalleSerializer(many=True)
+    nombre_persona = serializers.StringRelatedField(source='persona',
+                                                    read_only=True)
+    nombre_compania = serializers.StringRelatedField(source='compania',
+                                                     read_only=True)
+    nombre_termino = serializers.StringRelatedField(source='termino',
+                                                    read_only=True)
 
     class Meta:
         model = Factura
-        fields = ['fecha', 'persona', 'compania', 'termino',
-                  'factura_productos']
+        fields = ['id', 'fecha', 'persona', 'compania', 'termino',
+                  'factura_productos', 'nombre_persona', 'nombre_compania',
+                  'nombre_termino']
 
     def create(self, validated_data):
         # extraer detalles de la factura

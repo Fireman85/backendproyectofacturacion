@@ -9,6 +9,9 @@ class FacturaProductoSerializer(serializers.ModelSerializer):
 
 
 class FacturaProductoDetalleSerializer(serializers.ModelSerializer):
+    nombre_producto = serializers.StringRelatedField(source='producto',
+                                                     read_only=True)
+
     class Meta:
         model = FacturaProducto
-        fields = ['producto', 'cantidad']
+        fields = ['producto', 'cantidad', 'nombre_producto']

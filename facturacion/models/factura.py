@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Factura(models.Model):
-    fecha = models.DateTimeField()
+    fecha = models.DateTimeField(auto_now_add=True)
     persona = models.ForeignKey('Persona', on_delete=models.PROTECT,
                                 related_name='facturas')
     compania = models.ForeignKey('Compania', on_delete=models.PROTECT,
