@@ -9,11 +9,12 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
-import pymysql
+# import pymysql
+import dj_database_url
 
-pymysql.install_as_MySQLdb()
+# pymysql.install_as_MySQLdb()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # se agrega para archivos estaticos de DRF
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,15 +88,22 @@ CORS_ALLOW_ALL_ORIGINS = True
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',  # Usa el backend de MySQL
+#         'NAME': 'proyecto_facturacion',  # Nombre de la base de datos
+#         'USER': 'root',  # Tu usuario de MySQL
+#         'PASSWORD': 'REOJJdfhjdf458#$5',  # Tu contraseña de MySQL
+#         'HOST': 'localhost',  # O la IP de tu servidor de base de datos
+#         'PORT': '3306',  # Puerto por defecto de MySQL
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Usa el backend de MySQL
-        'NAME': 'proyecto_facturacion',  # Nombre de la base de datos
-        'USER': 'root',  # Tu usuario de MySQL
-        'PASSWORD': 'REOJJdfhjdf458#$5',  # Tu contraseña de MySQL
-        'HOST': 'localhost',  # O la IP de tu servidor de base de datos
-        'PORT': '3306',  # Puerto por defecto de MySQL
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 
@@ -133,7 +142,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
